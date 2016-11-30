@@ -1,0 +1,56 @@
+01. create repo (repo A)
+mkdir repoA
+cd repoA
+git init
+
+02. repo A: create 1st commit with some files (file A, file B)
+echo 'file A' > fileA
+echo 'file B' > fileB
+git add -A
+git commit -m 'first commit'
+
+03. repo A: create branch branch1 from master
+git branch branch1
+
+04. clone the current repo (repo B)
+git clone . '../repoB'
+
+05. repo B, branch1: create 2nd commit containing new file (file C)
+cd ../repoB
+git checkout branch1
+echo 'file C' > fileC
+git add -A
+git commit -m 'second commit'
+
+06. repo B: push changes to repo A
+git push
+
+07. repo A, branch1: modify line#1 in file C and commit
+cd ../repoA
+git checkout branch1
+echo 'file C modified from repoA' > fileC
+git add -A
+git commit -m 'third commit repoA'
+
+08. repo B, branch1: modify line#1 in file C and commit
+cd ../repoB
+echo 'file C modified from repoB' > fileC
+git add -A
+git commit -m 'third commit repoB'
+
+09. repo B, branch1: fetch changes from repo A
+git fetch origin
+
+10. repo B, branch1: merge in repoA's branch1 (resolve conflict)
+git mergetool
+git commit -m 'merged on step 10'
+
+11. repo A: add repoB as new remote
+cd ../repoA
+git remote add repoB '../repoB'
+
+12. repo A, branch1: merge in repoB's branch1
+git fetch repoB
+git merge repoB/branch1
+
+Результат: 2 репы repoA, repoB + отдельная репа со списком всех команд
